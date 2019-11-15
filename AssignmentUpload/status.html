@@ -1,0 +1,119 @@
+<html>
+<head>
+</head>
+<style>
+/*custom font for text*/
+@import url(https://fonts.googleapis.com/css?family=Nunito);
+/*CSS file for fontawesome - an iconfont we will be using. This CSS file imported contains the font-face declaration. More info: https://fortawesome.github.io/Font-Awesome/ */
+@import url(http://thecodeplayer.com/uploads/fonts/fontawesome/css/font-awesome.min.css);
+
+/*Basic reset*/
+* {margin: 0; padding: 0;}
+
+body {
+  background: #4EB889;
+  font-family: Nunito, arial, verdana;
+}
+#accordian {
+  background: #004050;
+  width: 300px;
+  margin: 100px auto 0 auto;
+  color: white;
+  /*Some cool shadow and glow effect*/
+  box-shadow: 
+    0 5px 15px 1px rgba(0, 0, 0, 0.6), 
+    0 0 200px 1px rgba(255, 255, 255, 0.5);
+}
+/*heading styles*/
+#accordian h3 {
+  font-size: 20px;
+  line-height: 50px;
+  padding: 0 10px;
+  cursor: pointer;
+  /*fallback for browsers not supporting gradients*/
+  background: #003040; 
+  background: linear-gradient(#003040, #002535);
+}
+/*heading hover effect*/
+#accordian h3:hover {
+  text-shadow: 0 0 1px rgba(255, 255, 255, 0.7);
+}
+/*iconfont styles*/
+#accordian h3 span {
+  font-size: 16px;
+  margin-right: 10px;
+}
+/*list items*/
+#accordian li {
+  list-style-type: none;
+}
+/*links*/
+#accordian ul ul li a {
+  color: white;
+  text-decoration: none;
+  font-size: 15px;
+  line-height: 35px;
+  display: block;
+  padding: 0 15px;
+  /*transition for smooth hover animation*/
+  transition: all 0.15s;
+}
+/*hover effect on links*/
+#accordian ul ul li a:hover {
+  background: #003545;
+  border-left: 5px solid lightgreen;
+}
+/*Lets hide the non active LIs by default*/
+#accordian ul ul {
+  display: none;
+}
+#accordian li.active ul {
+  display: block;
+}
+</style>
+<script>
+$(document).ready(function(){
+  $("#accordian h3").click(function(){
+    //slide up all the link lists
+    $("#accordian ul ul").slideUp();
+    //slide down the link list below the h3 clicked - only if its closed
+    if(!$(this).next().is(":visible"))
+    {
+      $(this).next().slideDown();
+    }
+  })
+})
+</script>
+<body>
+<div id="accordian">
+  <ul>
+    <li>
+      <h3><span class="icon-dashboard"></span>Dashboard</h3>
+      <ul>
+        <li><a href="#">Reports</a></li>
+        <li><a href="#">Search</a></li>
+        <li><a href="#">Graphs</a></li>
+        <li><a href="#">Settings</a></li>
+      </ul>
+    </li>
+    <!-- we will keep this LI open by default -->
+    <li class="active">
+      <h3><span class="icon-tasks"></span>Pending Tasks</h3>
+      <ul>
+        <li><a href="#">Assignment 3</a></li>
+        <li><a href="#">Assignment 5</a></li>
+        <li><a href="#">Assignment 6</a></li>
+      </ul>
+    </li>
+    <li class="active">
+      <h3><span class="icon-tasks"></span>Completed Tasks</h3>
+      <ul>
+        <li><a href="#">Assignment 1</a></li>
+        <li><a href="#">Assignment 2</a></li>
+        <li><a href="#">Assignment 4</a></li>
+      </ul>
+    </li>
+  </ul>
+</div>
+</body>
+</html>
