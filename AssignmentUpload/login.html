@@ -1,46 +1,45 @@
-<!DOCTYPE html>
 <html>
-	<head>
-		<style>
-		</style>
-		
-        <link rel="stylesheet" href="css/login.css">
-        <script>
-        function handleSubmit()
-        {
-        var formData=document.getElementById("log")
-        var formData = new FormData(formData)
-        var xhr = new XMLHttpRequest();
-        xhr.onreadystatechange = function() {
-    if (this.readyState == 4 && this.status == 200) {
-      //alert("fggg")
-     var res=JSON.parse(this.responseText)
-      sessionStorage.setItem("name", res["name"]);
-      window.location.href = "status.html";
-    }
- };
-        xhr.open("POST","http://127.0.0.1:5000/api/v1/login")
-        //xhr.setRequestHeader('content-type', 'application/x-www-form-urlencoded;charset=UTF-8');
-        xhr.send(formData)
-        }
-
+    <head>
+        <link rel = "stylesheet" type = "text/css" href = "css/login.css" />
+    </head>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+    <div class="login-page">
+      <div class="form">
        
-        
-        
-        </script>
-	</head>
-	<body>
-            <div class="login">
-                    <h1>Login</h1>
-                    <form onsubmit="handleSubmit()" id="log">
-                        <input type="text" name="username" placeholder="Username" required="required" />
-                        <input type="password" name="password" placeholder="Password" required="required" />
-                        <button type="submit" class="btn btn-primary btn-block btn-large">Let me in.</button>
-                    </form>
-                </div>
+
+        <form class="login-form" id="login-form">
+          <p id="error-login"></p>
+          <input type="text" name="username" placeholder="Username"/>
+          <input type="password" name="password" placeholder="Password"/>
+          <button id="login">Login</button>
+         
+        </form>
+      </div>
+    </div>
+    <script>
+    
 
 
+$(function() {
+    $("#login").click(function() {
+      $.ajax({
+            url: 'http://127.0.0.1:5000/api/v1/login',
+            data: $('#login-form').serialize(),
+            type: 'POST',
+            success: function(data) {
+              console.log(data)
+              sessionStorage.setItem("name", data);
+                window.location.href="status.html"
+            },
+            error: function(data) {
+              document.getElementById("error-login").innerHTML=data.responseText;
+              document.getElementById("error-login").style.color="red";
+            }
+        });
+        return false;
+    });
+});
 
+  </script>
 
-	</body>
-</html>
+  </html>

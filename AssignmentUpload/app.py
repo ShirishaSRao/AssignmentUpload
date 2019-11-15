@@ -17,8 +17,8 @@ app = Flask(__name__)
 CORS(app)
 
 #app.config["UPLOAD_FOLDER"]="/Users/shirishasrao/Desktop/AssignmentUpload/database"
-app.config["MONGO_URI"]= "mongodb+srv://dbShirisha:myatlasdatabase@cluster0-pb58c.mongodb.net/test?retryWrites=true&w=majority"
-mongo = pymongo.MongoClient('mongodb+srv://dbShirisha:myatlasdatabase@cluster0-pb58c.mongodb.net/test?retryWrites=true&w=majority')
+app.config["MONGO_URI"]= "mongodb+srv://shivangijadon16:pikachu4321@cluster0-wu1c9.mongodb.net/test?retryWrites=true&w=majority"
+mongo = pymongo.MongoClient("mongodb+srv://shivangijadon16:pikachu4321@cluster0-wu1c9.mongodb.net/test?retryWrites=true&w=majority")
 
 """def plagiarism_check():
 	file_list=glob.glob("/Users/shirishasrao/Desktop/AssignmentUpload/database/*.txt")
@@ -36,30 +36,42 @@ mongo = pymongo.MongoClient('mongodb+srv://dbShirisha:myatlasdatabase@cluster0-p
 			return a[n-1][i]
 	return 0		
 """
-db = pymongo.database.Database(mongo, 'user_credentials')
-usercol = pymongo.collection.Collection(db, 'user_credentials')
+db = pymongo.database.Database(mongo, 'user_cred')
+usercol = db["user_col"]
 
 @app.route('/api/v1/login',methods=['POST'])
 def login():
-    username = request.form.get('username')
-    password = request.form.get('password')
-    print(type(username))
-    for x in usercol.find({}):
-        print(x)
-    """print(username)
-    print(password)
+    username =  request.form['username']
+    password = request.form['password']
+    current_user=usercol.find_one({"username":username})
+    print(current_user)
+    """if(not(current_user)):
+        return "username does not exist!",400
     
-    print(x)
-    if(not(x)):
-        return "Username does not exists!",400
-    if(x):
-        if(x['password']==password):
-            return "",201
+    if(current_user):
+        if(current_user['password']==password):
+            session['user_id']= str(current_user['_id'])
+            session['username'] = current_user['username']
+            print(str(session['user_id']))
+            print("done")
+            print(current_user["name"])
+            return jsonify({"userData" : session['username'],"Name":current_user["name"]}),200
         else:
-            return "Password Incorrect!",400"""
-    return jsonify({"name":"arya"}),200
+            return "password incorrect!",400"""
+    return username,200
+    
+@app.route('/api/v1/get/assignment/completed/<username>',methods=["GET"])
+def get_completed_assignment(username):
+    current_user=usercol.find_one({"username":username})
+    print(current_user["Completed"])
+    return jsonify({"Completed":current_user["Completed"]})
 
-"""
+@app.route('/api/v1/get/assignment/pending/<username>',methods=["GET"])
+def get_pending_assignment(username):
+    current_user=usercol.find_one({"username":username})
+    print(current_user["Pending"])
+    return jsonify({"Pending":current_user["Pending"]})
+
 @app.route('/upload')
 def upload_file_home():
    return render_template('test.html')
@@ -79,6 +91,6 @@ def upload_file():
               return 'Plagiarism detected. Please re-upload.'
         else:
         	return 'error while uploading. Please re-upload'    
-"""
+
 if __name__ == '__main__':
    app.run(debug = True)

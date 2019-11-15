@@ -3,15 +3,77 @@
   <link rel="stylesheet" href="drag.css">
 </head>
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
-<script src="drag.js"></script>
+
 <body>
-  <div class="uploadAssignment">
-    <form class="upload" id="upload" enctype = "multipart/form-data">
-      <input type="file" multiple>
-        <p>Drag your files here or click in this area.</p>
-      <button type="submit" id="submit">Upload</button>
-      <p id="error_upload"></p>
-    </form>
-  </div>  
+    <div id="name"></div>
+    <script class="jsbin" src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+    <div class="file-upload">
+      <button class="file-upload-btn" type="button" onclick="$('.file-upload-input').trigger( 'click' )">Upload Assignment</button>
+    
+      <div class="image-upload-wrap">
+        <input class="file-upload-input" type='file' id="assignment_file" onchange="readURL(this);" />
+        <div class="drag-text">
+          <h3>Drag and drop a file or select Upload Assignment</h3>
+        </div>
+      </div>
+      <div class="file-upload-content">
+          <button type="button" onclick="Send()" class="remove-image">Submit <span class="image-title">Uploaded Image</span></button>
+          <p><br/></p>
+        <div class="image-title-wrap">
+          <button type="button" onclick="removeUpload()" class="remove-image">Remove <span class="image-title">Uploaded Image</span></button>
+        </div>
+      </div>
+    </div>
+
+  <script>
+ var d=document.getElementById("name");
+d.innerHTML="Upload  " + sessionStorage.getItem("assignment");
+
+function handleFiles(evt)
+{
+  var files = evt.target.files;
+  alert("gg")
+}
+function readURL(input) {
+  if (input.files && input.files[0]) {
+
+    var reader = new FileReader();
+
+    reader.onload = function(e) {
+      $('.image-upload-wrap').hide();
+
+      $('.file-upload-image').attr('src', e.target.result);
+      $('.file-upload-content').show();
+
+      $('.image-title').html(input.files[0].name);
+    };
+
+    reader.readAsDataURL(input.files[0]);
+
+  } else {
+    removeUpload();
+  }
+}
+
+function removeUpload() {
+  $('.file-upload-input').replaceWith($('.file-upload-input').clone());
+  $('.file-upload-content').hide();
+  $('.image-upload-wrap').show();
+}
+$('.image-upload-wrap').bind('dragover', function () {
+		$('.image-upload-wrap').addClass('image-dropping');
+	});
+	$('.image-upload-wrap').bind('dragleave', function () {
+		$('.image-upload-wrap').removeClass('image-dropping');
+});
+
+
+function Send()
+{
+  var f=document.getElementById("assignment_files")
+  console.log(f.files.length)
+}
+
+  </script>
 </body>
 </html>

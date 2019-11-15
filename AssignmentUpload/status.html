@@ -3,9 +3,7 @@
 </head>
 <style>
 /*custom font for text*/
-@import url(https://fonts.googleapis.com/css?family=Nunito);
-/*CSS file for fontawesome - an iconfont we will be using. This CSS file imported contains the font-face declaration. More info: https://fortawesome.github.io/Font-Awesome/ */
-@import url(http://thecodeplayer.com/uploads/fonts/fontawesome/css/font-awesome.min.css);
+
 
 /*Basic reset*/
 * {margin: 0; padding: 0;}
@@ -72,19 +70,12 @@ body {
 }
 </style>
 <script>
-$(document).ready(function(){
-  $("#accordian h3").click(function(){
-    //slide up all the link lists
-    $("#accordian ul ul").slideUp();
-    //slide down the link list below the h3 clicked - only if its closed
-    if(!$(this).next().is(":visible"))
-    {
-      $(this).next().slideDown();
-    }
-  })
-})
+
 </script>
-<body>
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+<body onload="get_completed()">
+
+  <div id="name"></div>
 <div id="accordian">
   <ul>
     <li>
@@ -99,21 +90,84 @@ $(document).ready(function(){
     <!-- we will keep this LI open by default -->
     <li class="active">
       <h3><span class="icon-tasks"></span>Pending Tasks</h3>
-      <ul>
-        <li><a href="#">Assignment 3</a></li>
-        <li><a href="#">Assignment 5</a></li>
-        <li><a href="#">Assignment 6</a></li>
+      <ul id="pending">
+        
       </ul>
     </li>
     <li class="active">
       <h3><span class="icon-tasks"></span>Completed Tasks</h3>
-      <ul>
-        <li><a href="#">Assignment 1</a></li>
-        <li><a href="#">Assignment 2</a></li>
-        <li><a href="#">Assignment 4</a></li>
+      <ul id="completed">
+        
       </ul>
     </li>
   </ul>
 </div>
+
+<script>
+var d=document.getElementById("name")
+d.innerHTML="Hello  " + sessionStorage.getItem("name")
+
+function get_completed() {
+ // alert("ss")
+  $.ajax({
+            url: 'http://127.0.0.1:5000/api/v1/get/assignment/completed/shiv',
+            type: 'GET',
+            success: function(data) {
+              console.log(data.Completed)
+             var i;
+             var comp=document.getElementById("completed")
+             for(i=0;i<data.Completed.length;i++)
+             {
+               var l=document.createElement("li")
+               l.innerHTML="<a href='#'>"+data.Completed[i]+"</a"
+               comp.appendChild(l)
+             }
+            },
+            error: function(data) {
+            //  document.getElementById("error-login").innerHTML=data.responseText;
+            //  document.getElementById("error-login").style.color="red";
+            }
+        });
+
+        $.ajax({
+            url: 'http://127.0.0.1:5000/api/v1/get/assignment/pending/shiv',
+            type: 'GET',
+            success: function(data) {
+              console.log(data.Pending)
+             var i;
+             var comp=document.getElementById("pending")
+             for(i=0;i<data.Pending.length;i++)
+             {
+               var l=document.createElement("li")
+               l.innerHTML="<a>"+data.Pending[i]+"</a"
+               l.setAttribute("onClick","uploadAssignment(\""+data.Pending[i]+"\")")
+               comp.appendChild(l)
+             }
+            },
+            error: function(data) {
+            //  document.getElementById("error-login").innerHTML=data.responseText;
+            //  document.getElementById("error-login").style.color="red";
+            }
+        });
+}
+
+function uploadAssignment(s)
+{
+  sessionStorage.setItem("assignment",s);
+                window.location.href="drag.html"
+//alert(s)
+}
+$(document).ready(function(){
+  $("#accordian h3").click(function(){
+    //slide up all the link lists
+    $("#accordian ul ul").slideUp();
+    //slide down the link list below the h3 clicked - only if its closed
+    if(!$(this).next().is(":visible"))
+    {
+      $(this).next().slideDown();
+    }
+  })
+})
+</script>
 </body>
 </html>
