@@ -68,49 +68,14 @@ body {
 #accordian li.active ul {
   display: block;
 }
-</style>
+</style><script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
 <script>
 
-</script>
-<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
-<body onload="get_completed()">
-
-  <div id="name"></div>
-<div id="accordian">
-  <ul>
-    <li>
-      <h3><span class="icon-dashboard"></span>Dashboard</h3>
-      <ul>
-        <li><a href="#">Reports</a></li>
-        <li><a href="#">Search</a></li>
-        <li><a href="#">Graphs</a></li>
-        <li><a href="#">Settings</a></li>
-      </ul>
-    </li>
-    <!-- we will keep this LI open by default -->
-    <li class="active">
-      <h3><span class="icon-tasks"></span>Pending Tasks</h3>
-      <ul id="pending">
-        
-      </ul>
-    </li>
-    <li class="active">
-      <h3><span class="icon-tasks"></span>Completed Tasks</h3>
-      <ul id="completed">
-        
-      </ul>
-    </li>
-  </ul>
-</div>
-
-<script>
-var d=document.getElementById("name")
-d.innerHTML="Hello  " + sessionStorage.getItem("name")
 
 function get_completed() {
  // alert("ss")
   $.ajax({
-            url: 'http://127.0.0.1:5000/api/v1/get/assignment/completed/shiv',
+            url: 'http://127.0.0.1:5000/api/v1/get/assignment/completed/'+sessionStorage.getItem("name"),
             type: 'GET',
             success: function(data) {
               console.log(data.Completed)
@@ -130,7 +95,7 @@ function get_completed() {
         });
 
         $.ajax({
-            url: 'http://127.0.0.1:5000/api/v1/get/assignment/pending/shiv',
+            url: 'http://127.0.0.1:5000/api/v1/get/assignment/pending/'+sessionStorage.getItem("name"),
             type: 'GET',
             success: function(data) {
               console.log(data.Pending)
@@ -169,5 +134,39 @@ $(document).ready(function(){
   })
 })
 </script>
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+<body onload="get_completed()">
+
+  <div id="name"></div>
+<div id="accordian" onload="get_completed()">
+  <ul>
+    <li>
+      <h3><span class="icon-dashboard"></span>Dashboard</h3>
+      <ul>
+        <li><a href="#">Reports</a></li>
+        <li><a href="#">Search</a></li>
+        <li><a href="#">Graphs</a></li>
+        <li><a href="#">Settings</a></li>
+      </ul>
+    </li>
+    <!-- we will keep this LI open by default -->
+    <li  onload="get_completed()" class="active">
+      <h3><span class="icon-tasks"></span>Pending Tasks</h3>
+      <ul id="pending">
+        
+      </ul>
+    </li>
+    <li onload="get_completed()" class="active">
+      <h3><span class="icon-tasks"></span>Completed Tasks</h3>
+      <ul id="completed">
+        
+      </ul>
+    </li>
+  </ul>
+</div>
+
+<script>
+var d=document.getElementById("name")
+d.innerHTML="Hello  " + sessionStorage.getItem("name")</script>
 </body>
 </html>

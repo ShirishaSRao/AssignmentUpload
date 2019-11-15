@@ -8,10 +8,11 @@ import logging
 from flask_pymongo import PyMongo
 import pymongo
 import json
-#from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.feature_extraction.text import TfidfVectorizer
 import glob
 
 
+count=0
 
 app = Flask(__name__)
 CORS(app)
@@ -20,8 +21,8 @@ CORS(app)
 app.config["MONGO_URI"]= "mongodb+srv://shivangijadon16:pikachu4321@cluster0-wu1c9.mongodb.net/test?retryWrites=true&w=majority"
 mongo = pymongo.MongoClient("mongodb+srv://shivangijadon16:pikachu4321@cluster0-wu1c9.mongodb.net/test?retryWrites=true&w=majority")
 
-"""def plagiarism_check():
-	file_list=glob.glob("/Users/shirishasrao/Desktop/AssignmentUpload/database/*.txt")
+def plagiarism_check():
+	file_list=glob.glob("database/*.txt")
 	corpus=[]
 	for file_path in file_list:
 		with open(file_path) as f_input:
@@ -35,7 +36,7 @@ mongo = pymongo.MongoClient("mongodb+srv://shivangijadon16:pikachu4321@cluster0-
 		if(a[n-1][i]>0.75):
 			return a[n-1][i]
 	return 0		
-"""
+
 db = pymongo.database.Database(mongo, 'user_cred')
 usercol = db["user_col"]
 
@@ -90,7 +91,35 @@ def upload_file():
               os.remove(path)
               return 'Plagiarism detected. Please re-upload.'
         else:
-        	return 'error while uploading. Please re-upload'    
+        	return 'error while uploading. Please re-upload'  
+
+@app.route('/api/v1/upload',methods=["POST"])
+def upload():
+    file=request.files['file']
+    print(file.filename)
+    filename=file.filename.split('.')[0]+'_new.'+file.filename.split('.')[-1]
+    file.save("database"+'/'+filename) 
+    if(plagiarism_check()):
+        return "Did not Pass Plagiarism check,PLease Reupload",400
+    #print 'GET=',file.filename
+    #print 'UPLOAD=',filename,'#'*50
+    return jsonify({"path":"gg"}),200
+
+@app.route('/api/v1/change_assignment/<username>',methods=["POST"])
+def change(username):
+    print(request)
+    assignment=request.form['assignment_name']
+    print(assignment)
+    current_user=usercol.find_one({"username":username})
+    print(current_user["Pending"])
+    c=current_user["Pending"]
+    c.remove(assignment)
+    usercol.update_one({"username":username},{ "$set" :{"Pending":c}})
+    
+    c1=current_user["Completed"]
+    c1.append(assignment)
+    usercol.update_one({"username":username},{ "$set" :{"Completed":c1}})
+    return jsonify({"Pending":current_user["Pending"]})
 
 if __name__ == '__main__':
    app.run(debug = True)
