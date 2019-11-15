@@ -1,74 +1,46 @@
+<!DOCTYPE html>
 <html>
-    <head>
-        <link rel = "stylesheet" type = "text/css" href = "style1.css" />
-    </head>
-    <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
-    <div class="login-page">
-      <div class="form">
-        <form class="register-form"  id="register-form">
-          <p id="error-register"></p>
-          <input type="text" name="name" placeholder="Name"/>
-          <input type="text" name="email" placeholder="Email address"/>
-          <input type="text" name="username" placeholder="Username" required autofocus/>
-          <input type="password"  name="password" placeholder="Password" required />
-          <input type="number" name="age" placeholder="Age"/>
-          <button id="register">Create</button>
-          <p class="message">Already registered? <a href="#">Sign In</a></p>
-        </form>
+	<head>
+		<style>
+		</style>
+		
+        <link rel="stylesheet" href="css/login.css">
+        <script>
+        function handleSubmit()
+        {
+        var formData=document.getElementById("log")
+        var formData = new FormData(formData)
+        var xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      //alert("fggg")
+     var res=JSON.parse(this.responseText)
+      sessionStorage.setItem("name", res["name"]);
+      window.location.href = "status.html";
+    }
+ };
+        xhr.open("POST","http://127.0.0.1:5000/api/v1/login")
+        //xhr.setRequestHeader('content-type', 'application/x-www-form-urlencoded;charset=UTF-8');
+        xhr.send(formData)
+        }
 
-        <form class="login-form" id="login-form">
-          <p id="error-login"></p>
-          <input type="text" name="username" placeholder="Username"/>
-          <input type="password" name="password" placeholder="Password"/>
-          <button id="login">Login</button>
-          <p class="message">Not registered? <a href="#">Create an account</a></p>
-        </form>
-      </div>
-    </div>
-    <script>
-      $('.message a').click(function(){
-    $('form').animate({height: "toggle", opacity: "toggle"}, "slow");
-      });
+       
+        
+        
+        </script>
+	</head>
+	<body>
+            <div class="login">
+                    <h1>Login</h1>
+                    <form onsubmit="handleSubmit()" id="log">
+                        <input type="text" name="username" placeholder="Username" required="required" />
+                        <input type="password" name="password" placeholder="Password" required="required" />
+                        <button type="submit" class="btn btn-primary btn-block btn-large">Let me in.</button>
+                    </form>
+                </div>
 
 
-$(function() {
-    $("#register").click(function() {
-      $.ajax({
-            url: 'http://127.0.0.1:5000/register',
-            data: $('#register-form').serialize(),
-            type: 'POST',
-            success: function(data) {
-                document.getElementById("error-register").innerHTML="Account Successfully Created!";
-                document.getElementById("error-register").style.color="blue";
-            },
-            error: function(data) {
-              document.getElementById("error-register").innerHTML=data.responseText;
-              document.getElementById("error-register").style.color="red";
-            }
-        });
-        return false;
-    });
-});
 
-$(function() {
-    $("#login").click(function() {
-      $.ajax({
-            url: 'http://127.0.0.1:5000/login',
-            data: $('#login-form').serialize(),
-            type: 'POST',
-            success: function(data) {
-                document.getElementById("error-login").innerHTML="Logged In!";
-                document.getElementById("error-login").style.color="blue";
-            },
-            error: function(data) {
-              document.getElementById("error-login").innerHTML=data.responseText;
-              document.getElementById("error-login").style.color="red";
-            }
-        });
-        return false;
-    });
-});
 
-  </script>
-
-  </html>
+	</body>
+</html>
