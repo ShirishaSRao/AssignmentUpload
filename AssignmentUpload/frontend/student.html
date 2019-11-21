@@ -75,12 +75,13 @@ body {
 function get_completed() {
  // alert("ss")
   $.ajax({
-            url: 'http://127.0.0.1:5000/api/v1/get/assignment/completed/'+sessionStorage.getItem("name"),
+            url: 'http://127.0.0.1:5000/api/v1/get/assignment/completed/'+sessionStorage.getItem("username"),
             type: 'GET',
             success: function(data) {
               console.log(data.Completed)
              var i;
              var comp=document.getElementById("completed")
+             comp.innerHTML=""
              for(i=0;i<data.Completed.length;i++)
              {
                var l=document.createElement("li")
@@ -95,12 +96,13 @@ function get_completed() {
         });
 
         $.ajax({
-            url: 'http://127.0.0.1:5000/api/v1/get/assignment/pending/'+sessionStorage.getItem("name"),
+            url: 'http://127.0.0.1:5000/api/v1/get/assignment/pending/'+sessionStorage.getItem("username"),
             type: 'GET',
             success: function(data) {
               console.log(data.Pending)
              var i;
              var comp=document.getElementById("pending")
+             comp.innerHTML=""
              for(i=0;i<data.Pending.length;i++)
              {
                var l=document.createElement("li")
@@ -114,6 +116,7 @@ function get_completed() {
             //  document.getElementById("error-login").style.color="red";
             }
         });
+        setTimeout(get_completed,2000)
 }
 
 function uploadAssignment(s)

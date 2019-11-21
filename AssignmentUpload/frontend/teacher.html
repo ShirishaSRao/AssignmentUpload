@@ -1,0 +1,65 @@
+<html>
+    <head>
+<link rel="stylesheet" href="css/teacher.css">
+    </head>
+    <body>
+        <div id="contact">Create Assignment</div>
+
+        <div id="contact">View Submissions</div>
+
+<div id="contactForm">
+
+  <h1>New Assignmnet</h1>
+  
+  
+  <form action="#" id="create-assignment" onsubmit="createAssignment()">
+    <input placeholder="Name" name="name" type="text"  />
+    
+    <input placeholder="Subject" name="subject" type="text"  />
+
+    <input placeholder="Due Date" name="due-date" type="date" name="dude date">
+    <textarea placeholder="Description" name="description"></textarea>
+    <input class="formBtn" type="submit" />
+    <input class="formBtn" type="reset" />
+  </form>
+</div>
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+        <script type="text/javascript">
+        $(function() {
+  
+  // contact form animations
+  $('#contact').click(function() {
+    $('#contactForm').fadeToggle();
+  })
+  $(document).mouseup(function (e) {
+    var container = $("#contactForm");
+
+    if (!container.is(e.target) // if the target of the click isn't the container...
+        && container.has(e.target).length === 0) // ... nor a descendant of the container
+    {
+        container.fadeOut();
+    }
+  });
+  
+});
+
+function createAssignment()
+{
+    $.ajax({
+            url: 'http://127.0.0.1:5000/api/v1/create/assignment',
+            data: $('#create-assignment').serialize(),
+            type: 'POST',
+            success: function(data) {
+              /*console.log(data)
+              sessionStorage.setItem("name", data.name);
+              sessionStorage.setItem("username", data.username);
+              window.location.href=data.type+".html"*/
+            },
+            error: function(data) {
+              //alert(data.responseText)
+            }
+        });
+}
+        </script>
+    </body>
+</html>

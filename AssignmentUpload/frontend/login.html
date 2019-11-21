@@ -28,12 +28,12 @@ $(function() {
             type: 'POST',
             success: function(data) {
               console.log(data)
-              sessionStorage.setItem("name", data);
-                window.location.href="status.html"
+              sessionStorage.setItem("name", data.name);
+              sessionStorage.setItem("username", data.username);
+              window.location.href=data.type+".html"
             },
             error: function(data) {
-              document.getElementById("error-login").innerHTML=data.responseText;
-              document.getElementById("error-login").style.color="red";
+              alert(data.responseText)
             }
         });
         return false;

@@ -11,15 +11,17 @@ import json
 from sklearn.feature_extraction.text import TfidfVectorizer
 import glob
 
-
+UPLOAD_FOLDER = 'database'
+ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
 count=0
 
 app = Flask(__name__)
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 CORS(app)
 
 #app.config["UPLOAD_FOLDER"]="/Users/shirishasrao/Desktop/AssignmentUpload/database"
-app.config["MONGO_URI"]= "mongodb+srv://shivangijadon16:pikachu4321@cluster0-wu1c9.mongodb.net/test?retryWrites=true&w=majority"
-mongo = pymongo.MongoClient("mongodb+srv://shivangijadon16:pikachu4321@cluster0-wu1c9.mongodb.net/test?retryWrites=true&w=majority")
+#app.config["MONGO_URI"]= "mongodb+srv://shivangijadon16:pikachu4321@cluster0-wu1c9.mongodb.net/test?retryWrites=true&w=majority"
+#mongo = pymongo.MongoClient("mongodb+srv://shivangijadon16:pikachu4321@cluster0-wu1c9.mongodb.net/test?retryWrites=true&w=majority")
 
 def plagiarism_check():
 	file_list=glob.glob("database/*.txt")
@@ -37,42 +39,111 @@ def plagiarism_check():
 			return a[n-1][i]
 	return 0		
 
-db = pymongo.database.Database(mongo, 'user_cred')
-usercol = db["user_col"]
+#db = pymongo.database.Database(mongo, 'user_cred')
+#usercol = db["user_col"]
+
+
+@app.route('/',methods=["GET"])
+def check():
+    filename="database/usercol.json"
+    with open(filename,'r') as f:
+        data=json.load(f)
+        print(data)
+        print(data["users"])
+    return "",200
 
 @app.route('/api/v1/login',methods=['POST'])
 def login():
     username =  request.form['username']
     password = request.form['password']
-    current_user=usercol.find_one({"username":username})
-    print(current_user)
-    """if(not(current_user)):
-        return "username does not exist!",400
-    
-    if(current_user):
-        if(current_user['password']==password):
-            session['user_id']= str(current_user['_id'])
-            session['username'] = current_user['username']
-            print(str(session['user_id']))
-            print("done")
-            print(current_user["name"])
-            return jsonify({"userData" : session['username'],"Name":current_user["name"]}),200
-        else:
-            return "password incorrect!",400"""
-    return username,200
-    
+    filename="database/usercol.json"
+    with open(filename,'r') as f:
+        data=json.load(f)
+        for i in data["users"]:
+            if(i["username"]==username):
+                if(i["password"]==password):
+                    return jsonify({"username":username,"name":i["name"],"type":i["type"]}),200
+                else:
+                    return "Password Incorrect!",400
+    return "Account does not exists!",400
+
+
 @app.route('/api/v1/get/assignment/completed/<username>',methods=["GET"])
 def get_completed_assignment(username):
-    current_user=usercol.find_one({"username":username})
-    print(current_user["Completed"])
-    return jsonify({"Completed":current_user["Completed"]})
+    filename="database/usercol.json"
+    with open(filename,'r') as f:
+        data=json.load(f)
+        for i in data["users"]:
+            if(i["username"]==username):
+                return jsonify({"Completed":i["Completed"]}),200
 
 @app.route('/api/v1/get/assignment/pending/<username>',methods=["GET"])
 def get_pending_assignment(username):
-    current_user=usercol.find_one({"username":username})
-    print(current_user["Pending"])
-    return jsonify({"Pending":current_user["Pending"]})
+    filename="database/usercol.json"
+    with open(filename,'r') as f:
+        data=json.load(f)
+        for i in data["users"]:
+            if(i["username"]==username):
+                return jsonify({"Pending":i["Pending"]}),200
+    
 
+@app.route('/api/v1/create/assignment',methods=["POST"])
+def create_assignment():
+    name=request.form["name"]
+    filename="database/usercol.json"
+    data={}
+    with open(filename,'r') as f:
+        data=json.load(f)
+        print(type(data))
+        for i in data["users"]:
+            if(i["type"]=="student"):
+                temp=i["Pending"]
+                temp.append(name)
+    print(data)
+    with open(filename,"w") as f:
+        json.dump(data,f)
+    return "",200
+
+@app.route('/api/v1/upload/<assignment_name>',methods=["POST"])
+def upload(assignment_name):
+    file=request.files['chooseFile']
+    print(file.filename)
+    filename=file.filename.split('.')[0]+file.filename.split('.')[-1]
+    try:
+        os.mkdir("database/"+assignment_name)
+    except:
+        pass
+    file.save("database"+'/'+assignment_name+'/'+filename) 
+    if(plagiarism_check()):
+        return "Did not Pass Plagiarism check,PLease Reupload",400
+    #print 'GET=',file.filename
+    #print 'UPLOAD=',filename,'#'*50
+    return jsonify({"path":"gg"}),200
+
+@app.route('/api/v1/change_assignment/<username>',methods=["POST"])
+def change(username):
+    print(request)
+    assignment=request.form['assignment_name']
+    filename="database/usercol.json"
+    data={}
+    print(assignment)
+    with open(filename,'r') as f:
+        data=json.load(f)
+        for i in data["users"]:
+            if(i["name"]==username):
+                temp=i["Pending"]
+                temp.remove(assignment)
+                print(temp)
+                i["Pending"]=temp
+                temp1=i["Completed"]
+                temp1.append(assignment)
+                print(temp1)
+                i["Completed"]=temp1
+    print(data)
+    with open(filename,"w") as f:
+        json.dump(data,f)
+    return jsonify({}),200
+"""
 @app.route('/upload')
 def upload_file_home():
    return render_template('test.html')
@@ -93,33 +164,9 @@ def upload_file():
         else:
         	return 'error while uploading. Please re-upload'  
 
-@app.route('/api/v1/upload',methods=["POST"])
-def upload():
-    file=request.files['file']
-    print(file.filename)
-    filename=file.filename.split('.')[0]+'_new.'+file.filename.split('.')[-1]
-    file.save("database"+'/'+filename) 
-    if(plagiarism_check()):
-        return "Did not Pass Plagiarism check,PLease Reupload",400
-    #print 'GET=',file.filename
-    #print 'UPLOAD=',filename,'#'*50
-    return jsonify({"path":"gg"}),200
 
-@app.route('/api/v1/change_assignment/<username>',methods=["POST"])
-def change(username):
-    print(request)
-    assignment=request.form['assignment_name']
-    print(assignment)
-    current_user=usercol.find_one({"username":username})
-    print(current_user["Pending"])
-    c=current_user["Pending"]
-    c.remove(assignment)
-    usercol.update_one({"username":username},{ "$set" :{"Pending":c}})
-    
-    c1=current_user["Completed"]
-    c1.append(assignment)
-    usercol.update_one({"username":username},{ "$set" :{"Completed":c1}})
-    return jsonify({"Pending":current_user["Pending"]})
+"""
+
 
 if __name__ == '__main__':
    app.run(debug = True)
