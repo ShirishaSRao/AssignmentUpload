@@ -69,6 +69,19 @@ def login():
     return "Account does not exists!",400
 
 
+@app.route('/api/v1/get_details/<username>',methods=["GET"])
+def get_details(username):
+    filename="database/usercol.json"
+    with open(filename,'r') as f:
+        data=json.load(f)
+        for i in data["users"]:
+            if(i["username"]==username):
+                name=i["name"]
+                contact=i["contact"]
+                group=i["group"]
+                username=username
+                return jsonify({"username":username,"name":name,"contact":contact,"group":group}),200
+
 @app.route('/api/v1/get/assignment/completed/<username>',methods=["GET"])
 def get_completed_assignment(username):
     filename="database/usercol.json"
@@ -90,10 +103,11 @@ def get_pending_assignment(username):
 @app.route('/api/v1/get/all_assignments',methods=["GET"])
 def get_all_assignments():
     filename="database/usercol.json"
+    temp=[]
     with open(filename,'r') as f:
         data=json.load(f)
         for i in data["users"]:
-            if(i["username"]=="shivi"):
+            if(i["username"]=="asha"):
                 temp=i["Pending"]
                 for j in i["Completed"]:
                     temp.append(j)
@@ -104,6 +118,9 @@ def get_all_assignments():
 @app.route('/api/v1/create/assignment',methods=["POST"])
 def create_assignment():
     name=request.form["name"]
+    date=request.form["due-date"]
+    description=request.form["description"]
+    subject=request.form["subject"]
     filename="database/usercol.json"
     data={}
     with open(filename,'r') as f:
@@ -112,10 +129,15 @@ def create_assignment():
         for i in data["users"]:
             if(i["type"]=="student"):
                 temp=i["Pending"]
-                temp.append(name)
-    print(data)
+                temp.append([name,subject,description,date])
+        d={"name":name,"date":date,"description":description,"subject":subject}
+        data["Assignments"].append(d)
+        print(data)
+        
+    
     with open(filename,"w") as f:
         json.dump(data,f)
+    print(name,date,subject,description)
     return "",200
 
 @app.route('/api/v1/upload/<assignment_name>/<name>',methods=["POST"])
@@ -128,10 +150,7 @@ def upload(assignment_name,name):
     except:
         pass
     file.save("database"+'/'+assignment_name+'/'+filename) 
-    if(plagiarism_check()):
-        return "Did not Pass Plagiarism check,PLease Reupload",400
-    #print 'GET=',file.filename
-    #print 'UPLOAD=',filename,'#'*50
+    
     return jsonify({"path":"gg"}),200
 
 @app.route('/api/v1/change_assignment/<username>',methods=["POST"])
@@ -146,11 +165,14 @@ def change(username):
         for i in data["users"]:
             if(i["name"]==username):
                 temp=i["Pending"]
-                temp.remove(assignment)
+                for k in temp:
+                    if(k[0]==assignment):
+                        temp.remove(k)
+                        break
                 print(temp)
                 i["Pending"]=temp
                 temp1=i["Completed"]
-                temp1.append(assignment)
+                temp1.append(k)
                 print(temp1)
                 i["Completed"]=temp1
     print(data)

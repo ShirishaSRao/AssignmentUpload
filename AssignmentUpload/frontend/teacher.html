@@ -17,7 +17,7 @@ function listAll(){
              for(i=0;i<data.All.length;i++)
              {
                var l=document.createElement("p")
-               l.innerHTML="<a>"+data.All[i]+"</a>"
+               l.innerHTML="<a>"+data.All[i][0] +" ,  "+data.All[i][1]+"</a>"
                 l.setAttribute("onClick","listAssignment(\""+data.All[i]+"\")")
                
                 
@@ -34,7 +34,10 @@ function listAll(){
 
 function listAssignment(s)
 {
-  sessionStorage.setItem("assignment",s);
+  sessionStorage.setItem("assignment",s.split(",")[0]);
+  sessionStorage.setItem("subject",s.split(",")[1]);
+  sessionStorage.setItem("description",s.split(",")[2]);
+  sessionStorage.setItem("date",s.split(",")[3]);
                 window.location.href="list.html"
 //alert(s)
 }
@@ -56,7 +59,13 @@ function listAssignment(s)
   <form action="#" id="create-assignment" onsubmit="createAssignment()">
     <p></p>
     <input placeholder="Name" name="name" type="text"  />
-    
+    <p>Subjects</p>
+    <select name="subject">
+        <option value="Software Engineering">Software Engineering</option>
+        <option value="Web Technology">Web Technology</option>
+        <option value="OOMD">OOMD</option>
+      
+      </select>
    <p>Deadline</p>
 
     <input placeholder="Due Date" name="due-date" type="date" name="dude date">

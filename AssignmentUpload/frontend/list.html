@@ -3,14 +3,19 @@
 <link rel="stylesheet" href="css/list.css">
 	</head>
 	<body>
-			<h1>RWD List to Table</h1>
+		<div id="name"></div>
+			<h1>Submissions</h1>
 			<table class="rwd-table">
 			  <tr>
-				<th>Movie Title</th>
-				<th>Genre</th>
-				<th>Year</th>
-				<th>Gross</th>
-			  </tr>
+				<th>Student</th>
+				<th>Group</th>
+				<th>Contact</th>
+				<th>Date</th>
+				
+				
+				<th>Download</th>
+				
+			  </tr><div>
 			  <tr>
 				<td data-th="Movie Title">Star Wars</td>
 				<td data-th="Genre">Adventure, Sci-fi</td>
@@ -28,9 +33,14 @@
 				<td data-th="Genre">Comedy, Drama</td>
 				<td data-th="Year">1973</td>
 				<td data-th="Gross">$115,000,000</td>
-			  </tr>
+			  </tr></div>
+
 			</table>
 			
+			<script text="type/javascript">
+
+			document.getElementById("name").innerHTML="<h1>"+sessionStorage.getItem("assignment")+"</h1>"
+			</script>
 		
 	</body>
 </html>

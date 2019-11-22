@@ -18,11 +18,10 @@ function get_completed() {
              comp.innerHTML=""
              for(i=0;i<data.Completed.length;i++)
              {
-               var l=document.createElement("li")
-               l.innerHTML="<a>"+data.Completed[i]+"</a"
-                l.setAttribute("onClick","downloadAssignment(\""+data.Completed[i]+"\")")
-               
-                
+              var l=document.createElement("tr")
+               l.innerHTML="<td><a>"+data.Completed[i][0]+"</a></td><td>"+data.Completed[i][1]+"</td>"
+
+               l.setAttribute("onClick","downloadAssignment(\""+data.Completed[i]+"\")")
                comp.appendChild(l)
              }
             },
@@ -42,8 +41,9 @@ function get_completed() {
              comp.innerHTML=""
              for(i=0;i<data.Pending.length;i++)
              {
-               var l=document.createElement("li")
-               l.innerHTML="<a>"+data.Pending[i]+"</a"
+               var l=document.createElement("tr")
+               l.innerHTML="<td><a>"+data.Pending[i][0]+"</a></td><td>"+data.Pending[i][1]+"</td>"
+
                l.setAttribute("onClick","uploadAssignment(\""+data.Pending[i]+"\")")
                comp.appendChild(l)
              }
@@ -53,19 +53,42 @@ function get_completed() {
             //  document.getElementById("error-login").style.color="red";
             }
         });
-        setTimeout(get_completed,2000)
+       // setTimeout(get_completed,20000)
+
+
+        $.ajax({
+            url: 'http://127.0.0.1:5000/api/v1/get_details/'+sessionStorage.getItem("username"),
+            type: 'GET',
+            success: function(data) {
+            var d=document.getElementById("details")
+            d.innerHTML="<p>Username: "+data.username+"</p><p>Contact:"+data.contact+
+            "</p><p>Group:"+data.group+"</p>"
+            
+            },
+            error: function(data) {
+            //  document.getElementById("error-login").innerHTML=data.responseText;
+            //  document.getElementById("error-login").style.color="red";
+            }
+        });
+       setTimeout(get_completed,5000)
 }
 
 function uploadAssignment(s)
 {
-  sessionStorage.setItem("assignment",s);
+  sessionStorage.setItem("assignment",s.split(",")[0]);
+  sessionStorage.setItem("subject",s.split(",")[1]);
+  sessionStorage.setItem("description",s.split(",")[2]);
+  sessionStorage.setItem("date",s.split(",")[3]);
                 window.location.href="drag.html"
 //alert(s)
 }
 
 function downloadAssignment(s)
 {
-  sessionStorage.setItem("assignment",s);
+  sessionStorage.setItem("assignment",s.split(",")[0]);
+  sessionStorage.setItem("subject",s.split(",")[1]);
+  sessionStorage.setItem("description",s.split(",")[2]);
+  sessionStorage.setItem("date",s.split(",")[3]);
                 window.location.href="file.html"
 //alert(s)
 }
@@ -85,35 +108,93 @@ $(document).ready(function(){
 <body onload="get_completed()">
 
   <div id="name"></div>
-<div id="accordian" onload="get_completed()">
-  <ul>
-    <li>
-      <h3><span class="icon-dashboard"></span>Dashboard</h3>
-      <ul>
-        <li><a href="#">Reports</a></li>
-        <li><a href="#">Search</a></li>
-        <li><a href="#">Graphs</a></li>
-        <li><a href="#">Settings</a></li>
-      </ul>
-    </li>
-    <!-- we will keep this LI open by default -->
-    <li  onload="get_completed()" class="active">
-      <h3><span class="icon-tasks"></span>Pending Tasks</h3>
-      <ul id="pending">
-        
-      </ul>
-    </li>
-    <li onload="get_completed()" class="active">
-      <h3><span class="icon-tasks"></span>Completed Tasks</h3>
-      <ul id="completed">
-        
-      </ul>
-    </li>
-  </ul>
+<div id="details">
+
 </div>
+
+<div style="position: fixed;left:50em;top:20em">
+<div class="material-table card">
+    <div class="material-table-header"> </div>
+    <div class="material-table-body">
+     
+    <table cellspacing="0">
+      <thead>
+        <tr>
+          <th>
+            <div>Pending</div>    
+          </th>
+          <th>
+            <div>Subject</div>   
+          </th>
+          
+        </tr>
+        <tr class="invisible">
+          <th>
+            Some column header    
+          </th>
+          <th>
+            Another column header
+          </th>
+         
+        </tr>
+      </thead>
+      <tbody id="pending">
+        
+      </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<div style="position: fixed;left:30em;top:20em">
+
+  <div class="material-table card" >
+      <div class="material-table-header"> </div>
+      <div class="material-table-body">
+       
+      <table cellspacing="0">
+        <thead>
+          <tr>
+            <th>
+              <div>Completed</div>    
+            </th>
+            <th>
+              <div>Subject</div>   
+            </th>
+            
+          </tr>
+          <tr class="invisible">
+            <th>
+              Some column header    
+            </th>
+            <th>
+              Another column header
+            </th>
+           
+          </tr>
+        </thead>
+        <tbody id="completed">
+          <tr >
+            <td>First</td>
+            <td>First</td>
+           
+          </tr>
+          <tr >
+              <td>First</td>
+              <td>First</td>
+             
+            </tr>
+          
+        </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
 
 <script>
 var d=document.getElementById("name")
 d.innerHTML="Hello  " + sessionStorage.getItem("name")</script>
+
+
+
 </body>
 </html>

@@ -7,7 +7,7 @@
 
 <body >
         <div id="name"></div>
-        
+        <h1>Upload</h1>
         <div class="file-upload">
                 <div class="file-select">
                   <div class="file-select-button" id="fileName">Choose File</div>
@@ -22,7 +22,10 @@
 <button id="upload-file-btn" type="button">Upload</button>
   <script>
  var d=document.getElementById("name");
-d.innerHTML="Upload  " + sessionStorage.getItem("assignment");
+d.innerHTML="<p>"+sessionStorage.getItem("assignment")+"</p>"
++"<p>"+sessionStorage.getItem("subject")+"</p>"
++"<p>"+sessionStorage.getItem("date")+"</p>"
++"<p>"+sessionStorage.getItem("description")+"</p>";
 
 
 $(function() {
