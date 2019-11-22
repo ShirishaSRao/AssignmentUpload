@@ -114,6 +114,15 @@ def get_all_assignments():
                 print(temp)
                 return jsonify({"All":temp}),200
     
+"""@app.route('/api/v1/get/submissions/<assignment_name>',methods=["GET"])
+def submissions(assignment_name):
+    for i in os.listdir('database/'):
+        l=[]
+        if(i==assignment_name):
+            for j in os.listdir('database/'+i+'/'):
+                temp=[]
+                temp.append(j.split('.')[0]
+        return "",200"""
 
 @app.route('/api/v1/create/assignment',methods=["POST"])
 def create_assignment():
