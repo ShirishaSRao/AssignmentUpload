@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+        <link  rel="stylesheet" href="drag.css" />
+    </head>
+<script>
+       var d=document.getElementById("name")
+      d.innerHTML=sessionStorage.getItem("name")
+
+    $.ajax({
+            url: 'http://127.0.0.1:5000/api/v1/get_details/'+sessionStorage.getItem("username"),
+            type: 'GET',
+            success: function(data) {
+            var u=document.getElementById("username")
+            var c=document.getElementById("contact")
+            var g=document.getElementById("group")
+            u.innerHTML="<p>Username: "+data.username+"</p>"
+            c.innerHTML="<p>Contact: "+data.contact+"</p>"
+            g.innerHTML="<p>Group: "+data.group+"</p>"
+            
+            },
+            error: function(data) {
+            //  document.getElementById("error-login").innerHTML=data.responseText;
+            //  document.getElementById("error-login").style.color="red";
+            }
+        });
+       setTimeout(get_completed,5000)
+}
+$(function() {
+    $("#submit").click(function() {
+      $.ajax({
+            url: 'http://127.0.0.1:5000/uploader',
+            data: $('#upload'),
+            type: 'POST',
+            success: function(data) {
+                document.getElementById("error-register").innerHTML="Account Successfully Created!";
+                //document.getElementById("error-register").style.color="blue";
+            },
+            error: function(data) {
+              document.getElementById("error-register").innerHTML=data.responseText;
+              //document.getElementById("error-register").style.color="red";
+            }
+        });
+        return false;
+    });
+});
+$(document).ready(function(){
+  $('form input').change(function () {
+    $('form p').text(this.files.length + " file(s) selected");
+  });
+});
+
+ $( "#nav-btn" ).click(function() {
+  $( "nav" ).toggle( "slow" );
+});
+</script>
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+<body >
+        <aside>
+  <h1>Welcome</h1>
+  <div id = "name"></div>
+  <br>
+  <br>
+  <br>
+  <div id="assign_name"></div><br>
+  <div id="subj"></div><br>
+  <div id="dat"></div><br>
+  <div id="desc"></div><br>  
+  
+  <div class="vertical-line"></div>
+  
+</aside>  
+        <h1 id="upl">Upload Here</h1>
+        <div class="file-upload" style="position: fixed; left:35em; top:30em; width: 50%">
+                <div class="file-select">
+                  <div class="file-select-button" id="fileName">Choose File</div>
+                  <div class="file-select-name" id="noFile">No file chosen...</div> 
+                 
+    <form id="upload-file" method="post" enctype="multipart/form-data">
+          <input type="file" name="chooseFile" id="chooseFile">
+          
+  </form>
+</div>
+</div>
+<button id="upload-file-btn" type="button">Upload</button>
+</body>
+  <script>
+ var a=document.getElementById("assign_name");
+ var s=document.getElementById("subj");
+ var t=document.getElementById("dat");
+ var c=document.getElementById("desc");
+a.innerHTML="<p>"+sessionStorage.getItem("assignment")+"</p>"
+s.innerHTML="<p>"+sessionStorage.getItem("subject")+"</p>"
+t.innerHTML="<p>"+sessionStorage.getItem("date")+"</p>"
+c.innerHTML="<p>"+sessionStorage.getItem("description")+"</p>"
+
+
+$(function() {
+    var form_data = new FormData($('#upload-file')[0]);
+    console.log(form_data)
+    
+    $('#chooseFile').bind('change', function () {
+  var filename = $("#chooseFile").val();
+  if (/^\s*$/.test(filename)) {
+    $(".file-upload").removeClass('active');
+    $("#noFile").text("No file chosen..."); 
+  }
+  else {
+    $(".file-upload").addClass('active');
+    $("#noFile").text(filename.replace("C:\\fakepath\\", "")); 
+  }
+});
+
+
+    $('#upload-file-btn').click(function() {
+        var form_data = new FormData($('#upload-file')[0]);
+        console.log(form_data)
+        $.ajax({
+            type: 'POST',
+            url: 'http:127.0.0.1:5000/api/v1/upload/'+sessionStorage.getItem('assignment')+'/'+sessionStorage.getItem("name"),
+            data: form_data,
+            contentType: false,
+            cache: false,
+            processData: false,
+            success: function(data) {
+                alert('Success!');
+                $.ajax({
+            url: 'http://127.0.0.1:5000/api/v1/change_assignment/'+sessionStorage.getItem("name"),
+            type: 'POST',
+            data: {'assignment_name':sessionStorage.getItem('assignment')},
+            
+            success: function(data) {
+              
+            },
+            error: function(data) {
+            //  document.getElementById("error-login").innerHTML=data.responseText;
+            //  document.getElementById("error-login").style.color="red";
+            }
+        });
+        //sleep(2000)
+        window.location.href="student.html"
+            },
+            error: function(data) {
+              alert(data.responseText)
+            }
+        });
+    });
+});
+  </script>
+
+</html>
