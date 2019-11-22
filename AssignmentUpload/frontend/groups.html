@@ -1,0 +1,77 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="css/groups.css">
+        <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+    </head>
+    <body>
+       <div id="load">
+           <h1>Please wait while we cluster students....</h1>
+            <svg class="spinner" width="65px" height="65px" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
+    <circle class="path" fill="none" stroke-width="6" stroke-linecap="round" cx="33" cy="33" r="30"></circle>
+      
+</svg>
+
+</div>
+
+<div id="groups" style="display: none;">
+        
+        <div class="card card-3">
+            <h3>Groups1</h3>
+            <p>dfddfdd</p>
+            <p>fdddd</p>
+            <p>dsddnjd</p>
+        </div>
+        
+      
+       
+</div>
+
+
+<script>
+
+setTimeout(clear,3000)
+
+function clear()
+{
+    var d=document.getElementById("load")
+    d.style.display="none"
+    document.getElementById("groups").style.display="block"
+    getGroups();
+}
+
+
+function getGroups()
+{
+    $.ajax({
+            url: 'http://127.0.0.1:5000/api/v1/groups',
+            type: 'GET',
+            success: function(data) {
+              console.log(data.groups)
+             var i;
+             var comp=document.getElementById("groups")
+             comp.innerHTML=""
+             var l=document.createElement("h1")
+             l.innerHTML="Groups"
+             comp.appendChild(l)
+             for(i=0;i<data.groups.length;i++)
+             {
+               var l=document.createElement("div")
+               l.classList.add("card")
+               l.classList.add("card-3")
+               //l.innerHTML="<a>"+data.Pending[i]+"</a"
+               //l.setAttribute("onClick","uploadAssignment(\""+data.Pending[i]+"\")")
+               l.innerHTML=
+               "<h3>Group "+String(i+1)+"<h3><p>"+data.groups[i][0]+"</p><p>"+data.groups[i][1]+"</p><p>"
+               +data.groups[i][2]+"</p>"
+               comp.appendChild(l)
+             }
+            },
+            error: function(data) {
+            //  document.getElementById("error-login").innerHTML=data.responseText;
+            //  document.getElementById("error-login").style.color="red";
+            }
+        });
+}
+</script>
+ </body>
+ </html>

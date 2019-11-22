@@ -47,7 +47,7 @@ $(function() {
         console.log(form_data)
         $.ajax({
             type: 'POST',
-            url: 'http:127.0.0.1:5000/api/v1/upload/'+sessionStorage.getItem('assignment'),
+            url: 'http:127.0.0.1:5000/api/v1/upload/'+sessionStorage.getItem('assignment')+'/'+sessionStorage.getItem("name"),
             data: form_data,
             contentType: false,
             cache: false,

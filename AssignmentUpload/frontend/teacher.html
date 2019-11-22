@@ -1,11 +1,52 @@
 <html>
     <head>
+
+
 <link rel="stylesheet" href="css/teacher.css">
+<script type="text/javascript">
+
+function listAll(){
+  $.ajax({
+            url: 'http://127.0.0.1:5000/api/v1/get/all_assignments',
+            type: 'GET',
+            success: function(data) {
+              console.log(data.All)
+             var i;
+             var comp=document.getElementById("Assignments")
+             comp.innerHTML=""
+             for(i=0;i<data.All.length;i++)
+             {
+               var l=document.createElement("p")
+               l.innerHTML="<a>"+data.All[i]+"</a>"
+                l.setAttribute("onClick","listAssignment(\""+data.All[i]+"\")")
+               
+                
+               comp.appendChild(l)
+             }
+            },
+            error: function(data) {
+            //  document.getElementById("error-login").innerHTML=data.responseText;
+            //  document.getElementById("error-login").style.color="red";
+            }
+        });
+
+}
+
+function listAssignment(s)
+{
+  sessionStorage.setItem("assignment",s);
+                window.location.href="list.html"
+//alert(s)
+}
+
+</script>
     </head>
-    <body>
+    <body onload="listAll()">
         <div id="contact">Create Assignment</div>
 
-        <div id="contact">View Submissions</div>
+        <div id="contact1">View Submissions</div>
+
+        <div id="contact2">Create Groups</div>
 
 <div id="contactForm">
 
@@ -13,9 +54,10 @@
   
   
   <form action="#" id="create-assignment" onsubmit="createAssignment()">
+    <p></p>
     <input placeholder="Name" name="name" type="text"  />
     
-    <input placeholder="Subject" name="subject" type="text"  />
+   <p>Deadline</p>
 
     <input placeholder="Due Date" name="due-date" type="date" name="dude date">
     <textarea placeholder="Description" name="description"></textarea>
@@ -23,6 +65,23 @@
     <input class="formBtn" type="reset" />
   </form>
 </div>
+
+
+<div id="contactForm1">
+    <h1>New Assignmnet</h1>
+    <div id="Assignments"></div>
+
+</div>
+
+<div id="contactForm2">
+  <h1>Groups</h1>
+ 
+     <h3>Group1</h3>
+     <p>njndjd</p>
+     <p>djddjn</p>
+
+    </div>
+
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
         <script type="text/javascript">
         $(function() {
@@ -42,6 +101,32 @@
   });
   
 });
+
+$(function() {
+  
+  // contact form animations
+  $('#contact1').click(function() {
+    $('#contactForm1').fadeToggle();
+  })
+  $(document).mouseup(function (e) {
+    var container = $("#contactForm1");
+
+    if (!container.is(e.target) // if the target of the click isn't the container...
+        && container.has(e.target).length === 0) // ... nor a descendant of the container
+    {
+        container.fadeOut();
+    }
+  });
+  
+});
+
+$(function() {
+  
+  // contact form animations
+  $('#contact2').click(function() {
+    window.location.href="groups.html"
+  
+});});
 
 function createAssignment()
 {

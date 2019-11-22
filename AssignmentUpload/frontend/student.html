@@ -1,74 +1,8 @@
 <html>
 <head>
 </head>
-<style>
-/*custom font for text*/
-
-
-/*Basic reset*/
-* {margin: 0; padding: 0;}
-
-body {
-  background: #4EB889;
-  font-family: Nunito, arial, verdana;
-}
-#accordian {
-  background: #004050;
-  width: 300px;
-  margin: 100px auto 0 auto;
-  color: white;
-  /*Some cool shadow and glow effect*/
-  box-shadow: 
-    0 5px 15px 1px rgba(0, 0, 0, 0.6), 
-    0 0 200px 1px rgba(255, 255, 255, 0.5);
-}
-/*heading styles*/
-#accordian h3 {
-  font-size: 20px;
-  line-height: 50px;
-  padding: 0 10px;
-  cursor: pointer;
-  /*fallback for browsers not supporting gradients*/
-  background: #003040; 
-  background: linear-gradient(#003040, #002535);
-}
-/*heading hover effect*/
-#accordian h3:hover {
-  text-shadow: 0 0 1px rgba(255, 255, 255, 0.7);
-}
-/*iconfont styles*/
-#accordian h3 span {
-  font-size: 16px;
-  margin-right: 10px;
-}
-/*list items*/
-#accordian li {
-  list-style-type: none;
-}
-/*links*/
-#accordian ul ul li a {
-  color: white;
-  text-decoration: none;
-  font-size: 15px;
-  line-height: 35px;
-  display: block;
-  padding: 0 15px;
-  /*transition for smooth hover animation*/
-  transition: all 0.15s;
-}
-/*hover effect on links*/
-#accordian ul ul li a:hover {
-  background: #003545;
-  border-left: 5px solid lightgreen;
-}
-/*Lets hide the non active LIs by default*/
-#accordian ul ul {
-  display: none;
-}
-#accordian li.active ul {
-  display: block;
-}
-</style><script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+<link rel="stylesheet" href="css/student.css">
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
 <script>
 
 
@@ -85,7 +19,10 @@ function get_completed() {
              for(i=0;i<data.Completed.length;i++)
              {
                var l=document.createElement("li")
-               l.innerHTML="<a href='#'>"+data.Completed[i]+"</a"
+               l.innerHTML="<a>"+data.Completed[i]+"</a"
+                l.setAttribute("onClick","downloadAssignment(\""+data.Completed[i]+"\")")
+               
+                
                comp.appendChild(l)
              }
             },
@@ -123,6 +60,13 @@ function uploadAssignment(s)
 {
   sessionStorage.setItem("assignment",s);
                 window.location.href="drag.html"
+//alert(s)
+}
+
+function downloadAssignment(s)
+{
+  sessionStorage.setItem("assignment",s);
+                window.location.href="file.html"
 //alert(s)
 }
 $(document).ready(function(){

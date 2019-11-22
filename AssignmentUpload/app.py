@@ -10,7 +10,8 @@ import pymongo
 import json
 from sklearn.feature_extraction.text import TfidfVectorizer
 import glob
-
+from flask import send_from_directory
+from grouping import groups
 UPLOAD_FOLDER = 'database'
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
 count=0
@@ -85,6 +86,19 @@ def get_pending_assignment(username):
         for i in data["users"]:
             if(i["username"]==username):
                 return jsonify({"Pending":i["Pending"]}),200
+
+@app.route('/api/v1/get/all_assignments',methods=["GET"])
+def get_all_assignments():
+    filename="database/usercol.json"
+    with open(filename,'r') as f:
+        data=json.load(f)
+        for i in data["users"]:
+            if(i["username"]=="shivi"):
+                temp=i["Pending"]
+                for j in i["Completed"]:
+                    temp.append(j)
+                print(temp)
+                return jsonify({"All":temp}),200
     
 
 @app.route('/api/v1/create/assignment',methods=["POST"])
@@ -104,11 +118,11 @@ def create_assignment():
         json.dump(data,f)
     return "",200
 
-@app.route('/api/v1/upload/<assignment_name>',methods=["POST"])
-def upload(assignment_name):
+@app.route('/api/v1/upload/<assignment_name>/<name>',methods=["POST"])
+def upload(assignment_name,name):
     file=request.files['chooseFile']
     print(file.filename)
-    filename=file.filename.split('.')[0]+file.filename.split('.')[-1]
+    filename=name+'.'+ file.filename.split('.')[1]
     try:
         os.mkdir("database/"+assignment_name)
     except:
@@ -143,6 +157,17 @@ def change(username):
     with open(filename,"w") as f:
         json.dump(data,f)
     return jsonify({}),200
+
+
+@app.route('/api/v1/groups',methods=["GET"])
+def get_groups():
+    return jsonify({"groups":groups()}),200
+
+@app.route('/uploads/<path:filename>')
+def download_file(filename):
+    print(filename)
+    return send_from_directory(app.config['UPLOAD_FOLDER'],
+                               filename, as_attachment=True)
 """
 @app.route('/upload')
 def upload_file_home():
