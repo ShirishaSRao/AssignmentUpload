@@ -211,7 +211,21 @@ def change(username):
 
 @app.route('/api/v1/groups',methods=["GET"])
 def get_groups():
-    return jsonify({"groups":groups()}),200
+    t=groups()
+    data={}
+    filename="database/usercol.json"
+    with open(filename,'r') as f:
+        data=json.load(f)
+        for i in t:
+            for j in i:
+                for k in data["users"]:
+                    if(k["name"]==j):
+                        print(j)
+                        k["group"]=t.index(i)+1
+    print(data)
+    with open(filename,"w") as f:
+        json.dump(data,f)       
+    return jsonify({"groups":t}),200
 
 @app.route('/uploads/<path:filename>')
 def download_file(filename):

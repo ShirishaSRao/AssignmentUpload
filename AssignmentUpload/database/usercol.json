@@ -1,1 +1,103 @@
-{"users": [{"username": "amy", "password": "123", "name": "Amy", "type": "student", "contact": "amy1231@gmail.com", "group": "", "Pending": [["Use Case Diagram", "OOMD", "Please upload the use case diagram of your case study along with use case description", "2019-11-29"]], "Completed": [["Requirements Doc", "Software Engineering", "Submit the requirements document of your chosen semester topic and pass it to next team", "2019-11-30"]]}, {"username": "asha", "password": "123", "name": "Asha", "type": "student", "contact": "asha45484@gmail.com", "group": "", "Pending": [["Requirements Doc", "Software Engineering", "Submit the requirements document of your chosen semester topic and pass it to next team", "2019-11-30"], ["Use Case Diagram", "OOMD", "Please upload the use case diagram of your case study along with use case description", "2019-11-29"]], "Completed": []}, {"username": "jyothi", "password": "123", "name": "Jyothi", "type": "teacher", "contact": "jyothi_332@gmail.com", "group": ""}], "Assignments": [{"name": "Requirements Doc", "date": "2019-11-30", "description": "Submit the requirements document of your chosen semester topic and pass it to next team", "subject": "Software Engineering"}, {"name": "Use Case Diagram", "date": "2019-11-29", "description": "Please upload the use case diagram of your case study along with use case description", "subject": "OOMD"}]}
+{
+    "users": [
+        {
+            "username": "amy",
+            "password": "123",
+            "name": "Amy",
+            "type": "student",
+            "contact": "amy1231@gmail.com",
+            "group": 1,
+            "Pending": [],
+            "Completed": []
+        },
+        {
+            "username": "asha",
+            "password": "123",
+            "name": "Asha",
+            "type": "student",
+            "contact": "asha45484@gmail.com",
+            "group": 1,
+            "Pending": [],
+            "Completed": []
+        },
+        {
+            "username": "alia",
+            "password": "123",
+            "name": "Alia",
+            "type": "student",
+            "contact": "aliagh1231@gmail.com",
+            "group": 2,
+            "Pending": [],
+            "Completed": []
+        },
+        {
+            "username": "john",
+            "password": "123",
+            "name": "John",
+            "type": "student",
+            "contact": "John76671231@gmail.com",
+            "group": 3,
+            "Pending": [],
+            "Completed": []
+        },
+        {
+            "username": "arun",
+            "password": "123",
+            "name": "Arun",
+            "type": "student",
+            "contact": "arunrt1231@gmail.com",
+            "group": 1,
+            "Pending": [],
+            "Completed": []
+        },
+        {
+            "username": "geetha",
+            "password": "123",
+            "name": "geetha",
+            "type": "student",
+            "contact": "geetha731@gmail.com",
+            "group": 2,
+            "Pending": [],
+            "Completed": []
+        },
+        {
+            "username": "seetha",
+            "password": "123",
+            "name": "seetha",
+            "type": "student",
+            "contact": "seetha1231@gmail.com",
+            "group": 4,
+            "Pending": [],
+            "Completed": []
+        },
+        {
+            "username": "amy",
+            "password": "123",
+            "name": "Amy",
+            "type": "student",
+            "contact": "amy1231@gmail.com",
+            "group": 1,
+            "Pending": [],
+            "Completed": []
+        },
+        {
+            "username": "shyam",
+            "password": "123",
+            "name": "Shyam",
+            "type": "student",
+            "contact": "shyam1231@gmail.com",
+            "group": 5,
+            "Pending": [],
+            "Completed": []
+        },
+        {
+            "username": "jyothi",
+            "password": "123",
+            "name": "Jyothi",
+            "type": "teacher",
+            "contact": "jyothi_332@gmail.com",
+            "group": ""
+        }
+    ],
+    "Assignments": []
+}
