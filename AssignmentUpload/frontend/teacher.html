@@ -17,12 +17,32 @@ function listAll(){
              for(i=0;i<data.All.length;i++)
              {
                var l=document.createElement("p")
-               l.innerHTML="<a>"+data.All[i][0] +" ,  "+data.All[i][1]+"</a>"
+               l.innerHTML="<p class='list'><a>"+String(i+1)+". "+data.All[i][0] +" ,  "+data.All[i][1]+"</a></p>"
                 l.setAttribute("onClick","listAssignment(\""+data.All[i]+"\")")
                
                 
                comp.appendChild(l)
              }
+            },
+            error: function(data) {
+            //  document.getElementById("error-login").innerHTML=data.responseText;
+            //  document.getElementById("error-login").style.color="red";
+            }
+        });
+
+
+
+        $.ajax({
+            url: 'http://127.0.0.1:5000/api/v1/get_details/'+sessionStorage.getItem("username"),
+            type: 'GET',
+            success: function(data) {
+            var u=document.getElementById("username")
+            var c=document.getElementById("contact5")
+            var g=document.getElementById("group")
+            u.innerHTML="<p>Username: "+data.username+"</p>"
+            c.innerHTML="<p>Contact: "+data.contact+"</p>"
+            //g.innerHTML="<p>Group: "+data.group+"</p>"
+            
             },
             error: function(data) {
             //  document.getElementById("error-login").innerHTML=data.responseText;
@@ -45,28 +65,45 @@ function listAssignment(s)
 </script>
     </head>
     <body onload="listAll()">
-        <div id="contact">Create Assignment</div>
 
-        <div id="contact1">View Submissions</div>
 
-        <div id="contact2">Create Groups</div>
+
+      <aside >
+        <h1>Welcome</h1>
+        <div id = "name" style="position: absolute;top:3em"></div>
+        <br>
+        <br>
+        <br><div  style="position: absolute;top:15em">
+        <div id = "username"></div>
+        <div id = "contact5"></div>
+        <div id = "group"></div>
+        </div>
+        
+        <div class="vertical-line"></div>
+        
+      </aside>
+        <div id="contact" style="position: absolute;left:15em;top:5em;color: black;" >CREATE ASSIGNMENT</div>
+
+        <div id="contact1" style="position: absolute;left:25em;top:5em;color: black;">VIEW SUBMISSIONS</div>
+
+        <div id="contact2" style="position: absolute;left:35em;top:5em;color: black;">CREATE GROUPS</div>
 
 <div id="contactForm">
 
-  <h1>New Assignmnet</h1>
+  <h2>New Assignmnet</h2>
   
   
   <form action="#" id="create-assignment" onsubmit="createAssignment()">
     <p></p>
     <input placeholder="Name" name="name" type="text"  />
-    <p>Subjects</p>
+    
     <select name="subject">
         <option value="Software Engineering">Software Engineering</option>
         <option value="Web Technology">Web Technology</option>
         <option value="OOMD">OOMD</option>
       
       </select>
-   <p>Deadline</p>
+  
 
     <input placeholder="Due Date" name="due-date" type="date" name="dude date">
     <textarea placeholder="Description" name="description"></textarea>
@@ -77,7 +114,7 @@ function listAssignment(s)
 
 
 <div id="contactForm1">
-    <h1>All Assignments</h1>
+    <h2>All Assignments</h2>
     <div id="Assignments"></div>
 
 </div>
@@ -93,6 +130,9 @@ function listAssignment(s)
 
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
         <script type="text/javascript">
+
+var d=document.getElementById("name")
+      d.innerHTML="<h3>"+sessionStorage.getItem("name")+"</h3>"
         $(function() {
   
   // contact form animations

@@ -4,31 +4,36 @@
 <head>
 <meta charset="UTF-8">
 <link rel="stylesheet" href="css/file.css">
-
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <script>
   window.console = window.console || function(t) {};
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prefixfree/1.0.7/prefixfree.min.js"></script>
-
+<style>
+</style>
 </head>
 <body translate="no">
-  <div id="name">
+    <aside>
+        <h1>Welcome</h1>
+        <div id = "name"></div>
+        <br>
+        <br>
+        <br>
+        <div id="assign_name"></div><br>
+        <div id="subj"></div><br>
+        <div id="dat"></div><br>
+        <div id="desc"></div><br>  
+        
+        <div class="vertical-line"></div>
+        
+      </aside>  
 
   </div>
+  <h1 id="upl">Download Your Submission</h1>
   
-  <a id="download" download >
-<div class="btn-circle-download">
-<svg id="arrow" width="14px" height="20px" viewBox="17 14 14 20">
-<path d="M24,15 L24,32"></path>
-<polyline points="30 27 24 33 18 27"></polyline>
-</svg>
-<svg id="check" width="21px" height="15px" viewBox="13 17 21 15">
-<polyline points="32.5 18.5 20 31 14.5 25.5"></polyline>
-</svg>
-<svg id="border" width="48px" height="48px" viewBox="0 0 48 48">
-<path d="M24,1 L24,1 L24,1 C36.7025492,1 47,11.2974508 47,24 L47,24 L47,24 C47,36.7025492 36.7025492,47 24,47 L24,47 L24,47 C11.2974508,47 1,36.7025492 1,24 L1,24 L1,24 C1,11.2974508 11.2974508,1 24,1 L24,1 Z"></path>
-</svg>
-</div></a>
+  <a id="download" download style="position: absolute;left:27em;top:13em">
+      <button class="btn"><i class="fa fa-download"></i> Download</button>
+</a>
 
 
 
@@ -37,11 +42,16 @@
 
 
 
-var d=document.getElementById("name");
-d.innerHTML="<p>"+sessionStorage.getItem("name")+"</p><p>"+sessionStorage.getItem("assignment")+"</p>"
-+"<p>"+sessionStorage.getItem("subject")+"</p>"
-+"<p>"+sessionStorage.getItem("date")+"</p>"
-+"<p>"+sessionStorage.getItem("description")+"</p>";
+var d=document.getElementById("name")
+      d.innerHTML="<h3>"+sessionStorage.getItem("name")+"</h3>"
+ var a=document.getElementById("assign_name");
+ var s=document.getElementById("subj");
+ var t=document.getElementById("dat");
+ var c=document.getElementById("desc");
+a.innerHTML="<p>Assignment Name: "+sessionStorage.getItem("assignment")+"</p>"
+s.innerHTML="<p>Subject: "+sessionStorage.getItem("subject")+"</p>"
+t.innerHTML="<p>Deadline: "+sessionStorage.getItem("date")+"</p>"
+c.innerHTML="<p>Description: "+sessionStorage.getItem("description")+"</p>"
    var e=document.getElementById("download")
     e.href="../database/"+sessionStorage.getItem('assignment')+'/'+
     sessionStorage.getItem('name')+ '.pdf'

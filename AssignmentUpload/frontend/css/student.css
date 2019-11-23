@@ -1,5 +1,5 @@
 /*custom font for text*/
-
+@import url('https://fonts.googleapis.com/css?family=PT+Sans&display=swap');
 
 /*Basic reset*/
 * {margin: 0; padding: 0;}
@@ -90,7 +90,7 @@ body {
 }
 
 .material-table { 
-  font-family: "Roboto", 'Helvetica Neue, Helvetica, Arial';
+  font-family: 'PT Sans', sans-serif;
   min-width: 35%;
   height: 400px; 
   overflow: auto  ;
@@ -111,7 +111,7 @@ body {
   top: 0;
   height: 48px; 
   border-bottom: 1px solid rgba(0, 0, 0, 0.075);
-  background-color: #F7882F; 
+  background-color:  #F7C331; 
 }
 
 table {
@@ -134,7 +134,7 @@ table th {
   padding: 0;
   font-weight: 500;
   font-size: 12px;
-  color : white;
+  color : black;
 
 }
 
@@ -193,7 +193,7 @@ table tbody tr:hover {
 
 body {
   -webkit-font-smoothing: antialiased;
-  font: normal 15px/1.5 "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: 'PT Sans', sans-serif;
   color: #ba9475;
 }
 
@@ -214,11 +214,10 @@ nav{
   display:block;
 }
 
-nav ul{
-}
+
 
 nav ul li{
-  line-height:30px;
+  line-height:40px;
 }
 
 nav ul li a{
@@ -231,14 +230,14 @@ nav ul li a:hover{
 
 
 h1{
-  font-family:Arial, Helvetica, sans-serif;
-  color:white;
+  font-family: 'PT Sans', sans-serif;
+  color:black;
   margin-bottom:50px;
-  font-size: 1.5em;
+  font-size: 2em;
 }
 
 h2{
-  font-family:Arial, Helvetica, sans-serif;
+  font-family: 'PT Sans', sans-serif;
   font-size:2.4em;
   font-weight:bold;
   color:#474958;  
@@ -284,27 +283,30 @@ h2{
     display:none;
   }
   #name{
-  font-family:Arial, Helvetica, sans-serif;
+    font-family: 'PT Sans', sans-serif;
   color:white;
   margin-bottom:50px;
   font-size: 1.5em;
 }
 
 #username{
-  font-family:Arial, Helvetica, sans-serif;
+  font-family: 'PT Sans', sans-serif;
   color:white;
-  font-size: 1em;
+  margin-bottom:10px;
+  font-size: 1.2em;
 }
 
 #contact{
-  font-family:Arial, Helvetica, sans-serif;
+  font-family: 'PT Sans', sans-serif;
   color:white;
-  font-size: 1em;
+  margin-bottom:10px;
+  font-size: 1.2em;
 }
 
 #group{
-  font-family:Arial, Helvetica, sans-serif;
+  font-family: 'PT Sans', sans-serif;
   color:white;
-  font-size: 1em;
+  margin-bottom:10px;
+  font-size: 1.2em;
 }
-}
+

@@ -5,7 +5,7 @@
     </head>
     <body>
        <div id="load">
-           <h1>Please wait while we cluster students....</h1>
+           <h1>Please wait while we group students....</h1>
             <svg class="spinner" width="65px" height="65px" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
     <circle class="path" fill="none" stroke-width="6" stroke-linecap="round" cx="33" cy="33" r="30"></circle>
       
@@ -51,11 +51,11 @@ function getGroups()
              {
                var l=document.createElement("div")
                l.classList.add("card")
-               l.classList.add("card-3")
+               l.classList.add("card-2")
                //l.innerHTML="<a>"+data.Pending[i]+"</a"
                //l.setAttribute("onClick","uploadAssignment(\""+data.Pending[i]+"\")")
                l.innerHTML=
-               "<h3>Group "+String(i+1)+"<h3><p>"+data.groups[i][0]+"</p><p>"+data.groups[i][1]+"</p><p>"
+               "<h3 style=\"color:#6b7a8f;\">Group "+String(i+1)+"<h3><p>"+data.groups[i][0]+"</p><p>"+data.groups[i][1]+"</p><p>"
                +data.groups[i][2]+"</p>"
                comp.appendChild(l)
              }

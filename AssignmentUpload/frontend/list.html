@@ -2,10 +2,26 @@
 	<head>
 <link rel="stylesheet" href="css/list.css">
 	</head>
-	<body>
-		<div id="name"></div>
+	<body onload=listall()>
+
+
+
+		 <aside>
+        <h1>Welcome</h1>
+        <div id = "name"></div>
+        <br>
+        <br>
+        <br>
+        <div id="assign_name"></div><br>
+        <div id="subj"></div><br>
+        <div id="dat"></div><br>
+        <div id="desc"></div><br>  
+        
+        <div class="vertical-line"></div>
+        
+      </aside>  
 			<h1>Submissions</h1>
-			<table class="rwd-table">
+			<table id="list" class="rwd-table">
 			  <tr>
 				<th>Student</th>
 				<th>Group</th>
@@ -15,31 +31,60 @@
 				
 				<th>Download</th>
 				
-			  </tr><div>
-			  <tr>
-				<td data-th="Movie Title">Star Wars</td>
-				<td data-th="Genre">Adventure, Sci-fi</td>
-				<td data-th="Year">1977</td>
-				<td data-th="Gross">$460,935,665</td>
 			  </tr>
-			  <tr>
-				<td data-th="Movie Title">Howard The Duck</td>
-				<td data-th="Genre">"Comedy"</td>
-				<td data-th="Year">1986</td>
-				<td data-th="Gross">$16,295,774</td>
-			  </tr>
-			  <tr>
-				<td data-th="Movie Title">American Graffiti</td>
-				<td data-th="Genre">Comedy, Drama</td>
-				<td data-th="Year">1973</td>
-				<td data-th="Gross">$115,000,000</td>
-			  </tr></div>
+			 
 
 			</table>
-			
+			<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
 			<script text="type/javascript">
 
-			document.getElementById("name").innerHTML="<h1>"+sessionStorage.getItem("assignment")+"</h1>"
+var d=document.getElementById("name")
+      d.innerHTML="<h3>"+sessionStorage.getItem("name")+"</h3>"
+ var a=document.getElementById("assign_name");
+ var s=document.getElementById("subj");
+ var t=document.getElementById("dat");
+ var c=document.getElementById("desc");
+a.innerHTML="<p>Assignment Name: "+sessionStorage.getItem("assignment")+"</p>"
+s.innerHTML="<p>Subject: "+sessionStorage.getItem("subject")+"</p>"
+t.innerHTML="<p>Deadline: "+sessionStorage.getItem("date")+"</p>"
+c.innerHTML="<p>Description: "+sessionStorage.getItem("description")+"</p>"
+			
+			
+			function listall()
+			{
+				$.ajax({
+            url: 'http://127.0.0.1:5000/api/v1/get/submissions/'+sessionStorage.getItem("assignment"),
+            type: 'GET',
+            success: function(data) {
+              console.log(data.list)
+             var i;
+             var comp=document.getElementById("list")
+           
+             comp.innerHTML=""
+			 var f=document.createElement("tr")
+			 f.innerHTML="<th>Student</th><th>Group</th><th>Contact</th><th>Date</th><th>Download</th>"
+             comp.appendChild(f)
+			 for(i=0;i<data.list.length;i++)
+             {
+               var l=document.createElement("tr")
+               l.innerHTML="<td>"+data.list[i][0]+"</td><td>"+data.list[i][1]+"</td><td>"
+			   +data.list[i][2]+"</td><td>"+data.list[i][3]+"</td><td><a download href="+"\"../database/"+sessionStorage.getItem("assignment")
+			   +"/"+data.list[i][0]+".pdf\" >Download</a></td>"
+             //   l.setAttribute("onClick","listAssignment(\""+data.All[i]+"\")")
+               
+                
+               comp.appendChild(l)
+			 }
+             
+            },
+            error: function(data) {
+            //  document.getElementById("error-login").innerHTML=data.responseText;
+            //  document.getElementById("error-login").style.color="red";
+            }
+			
+        });
+//setTimeout(listall,5000)
+			}
 			</script>
 		
 	</body>

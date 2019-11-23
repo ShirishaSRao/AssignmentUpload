@@ -8,6 +8,7 @@ import logging
 from flask_pymongo import PyMongo
 import pymongo
 import json
+import datetime
 from sklearn.feature_extraction.text import TfidfVectorizer
 import glob
 from flask import send_from_directory
@@ -114,15 +115,33 @@ def get_all_assignments():
                 print(temp)
                 return jsonify({"All":temp}),200
     
-"""@app.route('/api/v1/get/submissions/<assignment_name>',methods=["GET"])
+@app.route('/api/v1/get/submissions/<assignment_name>',methods=["GET"])
 def submissions(assignment_name):
+    l=[]
     for i in os.listdir('database/'):
-        l=[]
+        
+        print(i)
         if(i==assignment_name):
+            print(i)
+            s=str(datetime.datetime.fromtimestamp(os.path.getctime('database/'+i))).split(' ')[0]
             for j in os.listdir('database/'+i+'/'):
                 temp=[]
-                temp.append(j.split('.')[0]
-        return "",200"""
+                name=j.split('.')[0]
+                temp.append(name)
+                print(name)
+                filename="database/usercol.json"
+                data={}
+                with open(filename,'r') as f:
+                    data=json.load(f)
+                    #print(type(data))
+                    for i in data["users"]:
+                        if(i["name"]==name):
+                            temp.append(i["group"])
+                            temp.append(i["contact"])
+                temp.append(s)
+                print(temp)
+                l.append(temp)
+    return jsonify({"list":l}),200
 
 @app.route('/api/v1/create/assignment',methods=["POST"])
 def create_assignment():
